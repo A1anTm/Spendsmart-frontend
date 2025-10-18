@@ -29,9 +29,13 @@ const iconMap: Record<string, React.ElementType> = {
   orange: IoAlertCircleOutline,
 };
 
-export default function AuthPage() {
-  const systemTheme = useSystemTheme(); 
-  const [mode, setMode] = useState<Mode>('login');
+interface AuthFormProps {
+  mode?: Mode;
+}
+
+export default function AuthForm({ mode: initialMode = 'login' }: AuthFormProps) {
+  const systemTheme = useSystemTheme();
+  const [mode, setMode] = useState<Mode>(initialMode);
   const [error, setError] = useState('');
   const [resetEmail, setResetEmail] = useState('');
   const router = useRouter();
