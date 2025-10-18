@@ -69,16 +69,13 @@ export default function SavingsGoalsPage() {
         useEffect(() => {
             if (!isAuthenticated) return;
             fetchGoals();
-           // fetchGoals está memoizado con useCallback. Para evitar que el array de dependencias
-           // cambie de tamaño (y el error que viste), no lo incluimos aquí.
-           // eslint-disable-next-line react-hooks/exhaustive-deps
+
     }, [isAuthenticated]);
 
     useEffect(() => {
         if (!showTokenExpiredModal && isAuthenticated) {
             fetchGoals();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [showTokenExpiredModal, isAuthenticated]);
 
     if (!isAuthReady) return <div className="p-6">Cargando sesión...</div>;
@@ -151,7 +148,6 @@ export default function SavingsGoalsPage() {
                 return;
             }
 
-            // verificación defensiva: chequear que la meta no esté completa antes de enviar
             const goalNow = goals.find(g => g._id === selectedGoalId);
             if (!goalNow) {
                 showNotification('Meta no encontrada', 'error');
@@ -285,7 +281,6 @@ export default function SavingsGoalsPage() {
                                                 <p className="text-sm text-gray-600 dark:text-gray-100 line-clamp-2">{goal.description}</p>
                                             </div>
                                         </div>
-                                        {/* Fecha  badge cuando está completa */}
                                         <div className="flex flex-col items-end gap-1">
                                             <div className="text-sm text-gray-500">{new Date(goal.due_date).toLocaleDateString()}</div>
                                             {isComplete && (
@@ -335,7 +330,6 @@ export default function SavingsGoalsPage() {
                                     </div>
 
                                     <div className="mt-4 flex gap-2">
-                                        {/* Si la meta NO está completa mostramos Agregar Dinero */}
                                         {!isComplete && (
                                             <button
                                                 onClick={() => handleOpenAddMoneyModal(goal._id, goal.name)}
@@ -345,7 +339,6 @@ export default function SavingsGoalsPage() {
                                             </button>
                                         )}
 
-                                        {/* Eliminar (si la meta está completa se muestra con más énfasis) */}
                                         <button
                                             onClick={() => deleteGoal(goal._id)}
                                             className={`w-full rounded-lg py-2 text-sm transition ${isComplete

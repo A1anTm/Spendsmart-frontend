@@ -23,7 +23,6 @@ export default function Sidebar() {
     const [open, setOpen] = useState(false);
     const displayName = user?.full_name || user?.email || 'Usuario';
 
-    // Estado real del tema (inicializamos desde el DOM si se puede)
     const [isDark, setIsDark] = useState<boolean>(() => {
         try {
             return typeof window !== 'undefined' && document.documentElement.classList.contains('dark');
@@ -32,13 +31,11 @@ export default function Sidebar() {
         }
     });
 
-    // Flag para saber si ya estamos en cliente (evita hydration mismatch)
     const [mounted, setMounted] = useState(false);
     useEffect(() => {
         setMounted(true);
     }, []);
 
-    // Escuchar cambios en storage (otro tab) — actualiza estado de tema
     useEffect(() => {
         const updateTheme = () => {
             try {
@@ -51,7 +48,6 @@ export default function Sidebar() {
         return () => window.removeEventListener('storage', updateTheme);
     }, []);
 
-    // Aplicar tema en <html>, localStorage y cookie cuando isDark cambia
     useEffect(() => {
         try {
             const el = document.documentElement;
@@ -60,12 +56,9 @@ export default function Sidebar() {
 
             try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch (e) {}
 
-            // Escribimos cookie para que el server pueda leerla en la próxima navegación.
-            // max-age = 1 año (31536000)
             try {
                 document.cookie = `theme=${isDark ? 'dark' : 'light'}; path=/; max-age=31536000; samesite=lax`;
             } catch (e) {
-                // algunos entornos (p. ej. bloqueo cookies) pueden fallar
             }
         } catch (e) {
             console.warn('No se pudo aplicar tema', e);

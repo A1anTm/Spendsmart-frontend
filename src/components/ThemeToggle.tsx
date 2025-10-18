@@ -1,4 +1,3 @@
-// src/components/ThemeToggle.tsx (o donde tengas el toggle)
 'use client';
 
 export function ThemeToggle() {

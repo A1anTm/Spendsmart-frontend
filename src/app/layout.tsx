@@ -1,4 +1,3 @@
-// src/app/layout.tsx
 import './globals.css';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
@@ -13,7 +12,7 @@ export const metadata: Metadata = {
   title: 'SpendSmart',
   description: 'Tu app de finanzas personales',
   icons: {
-    icon: '/favicon-32x32.png', // favicon por defecto
+    icon: '/favicon-32x32.png', 
     apple: '/apple-touch-icon.png', 
     other: [
       { rel: 'icon', url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
@@ -22,10 +21,7 @@ export const metadata: Metadata = {
   },
 };
 
-/**
- * Fallback script (antes de hydration) — lo dejamos como fallback, pero la cookie
- * es la principal fuente para que el servidor ponga la clase en el HTML.
- */
+
 const setInitialTheme = `(function() {
   try {
     var theme = null;
@@ -41,11 +37,8 @@ const setInitialTheme = `(function() {
   } catch (e) {}
 })();`;
 
-/**
- * RootLayout es async para poder await cookies() en el servidor.
- */
+
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  // <-- aquí usamos await
   const cookieStore = await cookies();
   const themeCookie = cookieStore.get('theme')?.value;
   const htmlClass = themeCookie === 'dark' ? 'dark' : '';
@@ -53,7 +46,6 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   return (
     <html lang="es" className={htmlClass}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {/* Ejecuta ANTES de que React hidrate — fallback si no hay cookie */}
         <Script id="theme-initializer" strategy="beforeInteractive">
           {setInitialTheme}
         </Script>

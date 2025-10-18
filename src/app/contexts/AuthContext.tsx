@@ -86,22 +86,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         initAuth();
     }, []);
 
-    // Registrar interceptor una vez al montar el provider.
     useEffect(() => {
-        // onUnauthorized: abrir modal de token expirado
         const onUnauthorized = () => {
-            // evita abrir repetidamente si ya está visible
             setShowTokenExpiredModal(true);
         };
 
         const eject = setupApiInterceptors(onUnauthorized);
 
         return () => {
-            // cleanup: eyectar interceptor al desmontar
             try {
                 eject();
             } catch (e) {
-                // silencioso
             }
         };
     }, []);
@@ -126,7 +121,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setToken(null);
         setUser(null);
         setIsAuthenticated(false);
-        // cerrar modal por si acaso
         setShowTokenExpiredModal(false);
         router.push('/');
     };
