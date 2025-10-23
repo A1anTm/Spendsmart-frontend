@@ -339,7 +339,6 @@ export default function DashboardPage() {
         <StatCard
           title="Saldo Total"
           value={formatCurrency(summary?.totalBalance ?? 0)}
-          trend="+2.5% vs mes anterior"
           type="total"
         />
       </div>
